@@ -1,8 +1,23 @@
 export type BRAND = {
-  logo: string;
+  sku: string;
   name: string;
-  visitors: number;
-  revenues: string;
-  sales: number;
-  conversion: number;
+  price: { 
+    price: number; 
+    currency: string; 
+    discountedPrice: number; 
+    formatted: { 
+      price: string; 
+      discountedPrice: string; 
+    }; 
+  };
+  stock: { inventoryStatus: string };
+  media: { 
+    mainMedia: { 
+      image: { 
+        url: string; 
+        width: number; 
+        height: number 
+      } 
+    } 
+  };
 };

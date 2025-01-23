@@ -27,12 +27,10 @@ const TablesPage = () => {
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Tables" />
+      <Breadcrumb pageName="Inventories" />
 
       <div className="flex flex-col gap-10">
         <TableOne data={wixProducts} />
-        <TableTwo data={wixProducts} />
-        <TableThree />
       </div>
     </DefaultLayout>
   );

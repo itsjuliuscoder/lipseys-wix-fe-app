@@ -10,19 +10,20 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 
 const TablesPage = () => {
 
-  const [wixProducts, setWixProducts] = useState([]);
+  const [lipseysProducts, setLipseysProducts] = useState([]);
 
   useEffect(() => {
-    const fetchWixProducts = async () => {
-      try {
-        const response = await api.getWixProducts();
-        console.log("Wix products length: ", response.length);
-        setWixProducts(response);
-      } catch (error) {
-        console.error("Error fetching Wix products: ", error);
-      }
-    };
-    fetchWixProducts();
+    const fetchLipseysProducts = async () => {
+        try {
+          const response = await api.getLipseysCatalog();
+          console.log("Lipseys products ", response);
+          setLipseysProducts(response);
+        } catch (error) {
+          console.error("Error fetching Lipseys products: ", error);
+        }
+    }
+  
+    fetchLipseysProducts();
   } , []);
 
   return (
@@ -30,9 +31,8 @@ const TablesPage = () => {
       <Breadcrumb pageName="Tables" />
 
       <div className="flex flex-col gap-10">
-        <TableOne data={wixProducts} />
-        <TableTwo data={wixProducts} />
-        <TableThree />
+        {/* <TableOne /> */}
+        <TableTwo data={lipseysProducts} />
       </div>
     </DefaultLayout>
   );

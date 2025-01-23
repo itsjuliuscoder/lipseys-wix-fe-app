@@ -1,14 +1,32 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import api from "@/lib/api";
+import { useRouter } from "next/navigation";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const SignIn: React.FC = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [userData, setUserData] = useState<string | null>(null);
+  const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    const user = localStorage.getItem("userDetails");
+    const userDetails = user ? JSON.parse(user) : null;
+    if(user && userDetails) {
+        router.push('/');
+    } else {
+        router.push('/auth/signin');
+    }
+
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,15 +34,21 @@ const SignIn: React.FC = () => {
 
     try {
       const response = await api.signIn({ email, password });
-      if (response.ok) {
-        // Handle successful sign-in
-        console.log("Sign-in successful");
-      } else {
-        // Handle sign-in error
-        console.error("Sign-in failed");
-      }
+      localStorage.setItem('userDetails', JSON.stringify(response.user));
+      localStorage.setItem('authToken', response.token);
+      setMessage(response.statusMessage);
+      setLoading(false);
+      toast.success(response.statusMessage);
+      setTimeout(() => {
+        if (response) {
+          router.push("/");
+        }
+      }, 2000);
     } catch (error) {
-      console.error("An error occurred during sign-in", error);
+      setLoading(false);
+      const errorMsg = "Login failed --> " + (error instanceof Error ? error.message : "Unknown error");
+      setErrorMessage(errorMsg);
+      toast.error(errorMsg);
     }
   };
 
@@ -33,24 +57,25 @@ const SignIn: React.FC = () => {
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="px-26 py-17.5 text-center">
+            <ToastContainer />
               <Link className="mb-5.5 inline-block" href="/">
-                <Image
+                {/* <Image
                   className="hidden dark:block"
                   src={"/images/logo/logo.svg"}
                   alt="Logo"
                   width={176}
                   height={32}
-                />
-                <Image
+                /> */}
+                {/* <Image
                   className="dark:hidden"
                   src={"/images/logo/logo-dark.svg"}
                   alt="Logo"
                   width={176}
                   height={32}
-                />
+                /> */}
               </Link>
 
-              <p className="2xl:px-20">
+              <p className="4xl:px-20">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit
                 suspendisse.
               </p>
