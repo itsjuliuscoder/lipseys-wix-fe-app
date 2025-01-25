@@ -1,16 +1,16 @@
 "use client";
 import React, { use, useEffect, useState } from "react";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import TableOne from "@/components/Tables/TableOne";
-import TableThree from "@/components/Tables/TableThree";
-import TableTwo from "@/components/Tables/TableTwo";
+import TableSeven from "@/components/Tables/TableSeven";
 import api from "@/lib/api";
+import { DEPOSIT } from "@/types/deposits";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 
 
-const TablesPage = () => {
+const AllDeposits = () => {
 
   const [allUsers, setAllUsers] = useState([])
+  const [withdrawalTrans, setWithdrawalTrans] = useState<DEPOSIT[]>([]);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -21,18 +21,29 @@ const TablesPage = () => {
         console.error("Error fetching Wix products: ", error);
       }
     };
+
+    const fetchWithdrawalTransactions = async () => {
+        try {
+          const response = await api.getWithdrawalTransactions();
+          setWithdrawalTrans(response.withdrawals);
+          console.log("Total withdrawal ", response);
+        } catch (error) {
+          console.error("Error fetching Wix products: ", error);
+        }
+    }
+    fetchWithdrawalTransactions();
     fetchUsers();
   } , []);
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Tables" />
+      <Breadcrumb pageName="All Deposits" />
       <div className="flex flex-col gap-10">
-        <TableOne data={allUsers} />
+        <TableSeven data={withdrawalTrans} />
         {/* <TableThree /> */}
       </div>
     </DefaultLayout>
   );
 };
 
-export default TablesPage;
+export default AllDeposits;

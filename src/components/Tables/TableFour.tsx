@@ -1,121 +1,136 @@
-import { BRAND } from "@/types/brand";
+"use client";
+import { TRADE } from "../../types/trades";
 import Image from "next/image";
-import DropdownDefault from "../Dropdowns/DropdownDefault";
+import { useState } from "react";
+import api from "@/lib/api";
+import { FC } from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from "next/navigation";
 
-const brandData: BRAND[] = [
-  {
-    logo: "/images/brand/brand-01.svg",
-    name: "Google",
-    visitors: 3.5,
-    revenues: "5,768",
-    sales: 590,
-    conversion: 4.8,
-  },
-  {
-    logo: "/images/brand/brand-02.svg",
-    name: "Twitter",
-    visitors: 2.2,
-    revenues: "4,635",
-    sales: 467,
-    conversion: 4.3,
-  },
-  {
-    logo: "/images/brand/brand-06.svg",
-    name: "Youtube",
-    visitors: 2.1,
-    revenues: "4,290",
-    sales: 420,
-    conversion: 3.7,
-  },
-  {
-    logo: "/images/brand/brand-04.svg",
-    name: "Vimeo",
-    visitors: 1.5,
-    revenues: "3,580",
-    sales: 389,
-    conversion: 2.5,
-  },
-  {
-    logo: "/images/brand/brand-05.svg",
-    name: "Facebook",
-    visitors: 3.5,
-    revenues: "6,768",
-    sales: 390,
-    conversion: 4.2,
-  },
-];
+interface TableFourProps {
+  data: TRADE[];
+}
 
-const TableFour: React.FC = () => {
+//const TableFour: FC<TableFourProps> = ({ data }) => {
+const TableFour: FC<TableFourProps> = ({ data }) => {
+    const itemsPerPage = 5;
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const router = useRouter();
+
+    const handleNextPage = () => {
+      setCurrentPage((prevPage) => prevPage + 1);
+    };
+
+    const handlePreviousPage = () => {
+      setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+    };
+
+    const paginatedData = data.slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage
+    );
+
   return (
-    <div className="col-span-12 xl:col-span-7">
-      <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-        <div className="mb-6 flex justify-between">
-          <div>
-            <h4 className="text-title-sm2 font-bold text-black dark:text-white">
-              Top Channels
-            </h4>
+    <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+      <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
+        Signal Details
+      </h4>
+      <ToastContainer />
+      <div className="flex flex-col">
+        <div className="grid grid-cols-3 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-7">
+          <div className="p-2.2 xl:p-2">
+            <h5 className="text-sm font-medium uppercase xsm:text-base">
+              S/N
+            </h5>
           </div>
-          <DropdownDefault />
+          <div className="p-2.5 text-center xl:p-5">
+            <h5 className="text-sm font-medium uppercase xsm:text-base">
+              Symbol
+            </h5>
+          </div>
+          <div className="p-2.5 text-center xl:p-5">
+            <h5 className="text-sm font-medium uppercase xsm:text-base">
+              Interval
+            </h5>
+          </div>
+          <div className="hidden p-2.5 text-center sm:block xl:p-5">
+            <h5 className="text-sm font-medium uppercase xsm:text-base">
+              Units
+            </h5>
+          </div>
+          <div className="hidden p-2.5 text-center sm:block xl:p-5">
+            <h5 className="text-sm font-medium uppercase xsm:text-base">
+              Amount
+            </h5>
+          </div>
+          <div className="hidden p-2.5 text-center sm:block xl:p-5">
+            <h5 className="text-sm font-medium uppercase xsm:text-base">
+              Direction
+            </h5>
+          </div>
+          <div className="hidden p-2.5 text-center sm:block xl:p-5">
+            <h5 className="text-sm font-medium uppercase xsm:text-base">
+              Status
+            </h5>
+          </div>
         </div>
-
-        <div className="flex flex-col">
-          <div className="grid grid-cols-3 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-4">
-            <div className="p-2.5 xl:p-4">
-              <h5 className="text-sm font-medium uppercase xsm:text-base">
-                Source
-              </h5>
-            </div>
-            <div className="p-2.5 text-center xl:p-4">
-              <h5 className="text-sm font-medium uppercase xsm:text-base">
-                Visitors
-              </h5>
-            </div>
-            <div className="p-2.5 text-center xl:p-4">
-              <h5 className="text-sm font-medium uppercase xsm:text-base">
-                Revenues
-              </h5>
-            </div>
-            <div className="hidden p-2.5 text-center sm:block xl:p-4">
-              <h5 className="text-sm font-medium uppercase xsm:text-base">
-                Conversion
-              </h5>
-            </div>
-          </div>
-
-          {brandData.map((brand, key) => (
-            <div
-              className={`grid grid-cols-3 sm:grid-cols-4 ${
-                key === brandData.length - 1
-                  ? ""
-                  : "border-b border-stroke dark:border-strokedark"
-              }`}
-              key={key}
-            >
-              <div className="flex items-center gap-3 p-2.5 xl:p-5">
-                <div className="h-9 w-full max-w-9 flex-shrink-0">
-                  <Image src={brand.logo} width={60} height={50} alt="Brand" />
-                </div>
-                <p className="hidden font-medium text-black dark:text-white sm:block">
-                  {brand.name}
-                </p>
+        <>
+          {paginatedData.map((tableData, index) => (
+            <div key={index} className="grid grid-cols-3 border-b border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-7 md:px-6 2xl:px-7.5">
+              <div className="flex items-left p-2.5 xl:p-5">
+                <p className="text-black dark:text-white">{(currentPage - 1) * itemsPerPage + index + 1}</p>
               </div>
 
               <div className="flex items-center justify-center p-2.5 xl:p-5">
-                <p className="font-medium text-black dark:text-white">
-                  {brand.visitors}K
-                </p>
+                <p className="text-black dark:text-white">{tableData.signalDetails.symbol}</p>
               </div>
 
               <div className="flex items-center justify-center p-2.5 xl:p-5">
-                <p className="font-medium text-meta-3">${brand.revenues}</p>
+                <p className="text-black dark:text-white">{tableData.interval}</p>
+              </div>
+
+              <div className="flex items-center justify-center p-2.5 xl:p-5">
+                <p className="text-meta-3">
+                  {tableData.units ? tableData.units : "N/A"}
+                </p>
               </div>
 
               <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-                <p className="font-medium text-meta-5">{brand.conversion}%</p>
+                <p className="text-meta-3">
+                  {tableData.amount ? tableData.amount : "N/A"}
+                </p>
+              </div>
+              <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
+                <p className="text-meta-3">
+                  {tableData.direction ? tableData.direction : "N/A"}
+                </p>
+              </div>
+              <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
+                <p className={`text-meta-3 rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${tableData.status === "ongoing" ? "text-yellow-500" : tableData.status === "win" ? "text-green-500" : tableData.status === "loss" ? "text-red-500" : ""}`}>
+                  {tableData.status ? tableData.status : "N/A"}
+                </p>
               </div>
             </div>
           ))}
-        </div>
+          <div className="flex justify-between mt-4 mb-3">
+            <button
+              onClick={handlePreviousPage}
+              disabled={currentPage === 1}
+              className="px-4 py-2 bg-green-500 text-black-2 rounded disabled:opacity-50"
+            >
+              Previous
+            </button>
+            <button
+              onClick={handleNextPage}
+              disabled={currentPage * itemsPerPage >= data.length}
+              className="px-4 py-2 bg-green-500 text-black-2 rounded disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+        </>
       </div>
     </div>
   );

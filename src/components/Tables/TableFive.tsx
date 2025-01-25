@@ -16,60 +16,12 @@ interface TableOneProps {
 const TableOne: FC<TableOneProps> = ({ data }) => {
     const itemsPerPage = 10;
     const [currentPage, setCurrentPage] = useState(1);
-    const [openModal, setOpenModal] = useState(false);
 
     const router = useRouter();
 
     const handleNextPage = () => {
       setCurrentPage((prevPage) => prevPage + 1);
     };
-
-    const [formData, setFormData] = useState({
-            userId: '',
-            transType: '',
-            amount: '',
-    });
-
-    const [payload, setPayload] = useState<{ userId: string; }>({
-            userId: ''
-    });
-
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-            const { name, value } = event.target;
-            setFormData({
-                ...formData,
-                [name]: value,
-                userId: payload.userId,
-            });
-    };
-
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      console.log('Form Data Submitted:', formData);
-      // Add your form submission logic here
-      try {
-          const response = await api.updateWalletBalance(formData);
-          if (response){
-              toast.success('Manually Updated Wallet Balance Successfully');
-          }
-          console.log('Wallet Balance updated:', response);
-          setFormData({
-              userId: '',
-              transType: '',
-              amount: '',
-          });
-          setTimeout(() => {
-              router.push('/');
-          }, 3000);
-      } catch (error) {
-          toast.error('An error occurred while updating wallet balance');
-          setFormData({
-              userId: '',
-              transType: '',
-              amount: '',
-          });
-      }
-  };
 
     const handleBlockUser = async (userId: string) => {
       console.log("user id", userId);
@@ -84,15 +36,6 @@ const TableOne: FC<TableOneProps> = ({ data }) => {
         toast.error("Failed to block user");
       }
     };
-
-    const handleTrade = (id: string) => {
-     
-      setOpenModal(true);
-      const payload = {
-          userId: id
-      }
-        setPayload(payload);
-    }
 
     const handlePreviousPage = () => {
       setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
@@ -200,20 +143,32 @@ const TableOne: FC<TableOneProps> = ({ data }) => {
                     </svg>
                   </button>
                   {/* </button> */}
-                  <button className="hover:text-primary" onClick={() => handleTrade(tableData._id)}>
-                      <svg
-                        className="fill-current"
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M10.59 13.41L9.17 12L14.83 6.34L16.24 7.76L10.59 13.41ZM3 12C3 7.58 6.58 4 11 4C12.66 4 14.21 4.53 15.45 5.46L13.41 7.5C12.76 7.18 12.02 7 11 7C8.24 7 6 9.24 6 12C6 14.76 8.24 17 11 17C12.02 17 12.76 16.82 13.41 16.5L15.45 18.54C14.21 19.47 12.66 20 11 20C6.58 20 3 16.42 3 12ZM21 12C21 16.42 17.42 20 13 20C11.34 20 9.79 19.47 8.55 18.54L10.59 16.5C11.24 16.82 11.98 17 13 17C15.76 17 18 14.76 18 12C18 9.24 15.76 7 13 7C11.98 7 11.24 7.18 10.59 7.5L8.55 5.46C9.79 4.53 11.34 4 13 4C17.42 4 21 7.58 21 12Z"
-                          fill="currentColor"
-                        />
-                      </svg>                  
+                  <button className="hover:text-primary">
+                    <svg
+                      className="fill-current"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 18 18"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M13.7535 2.47502H11.5879V1.9969C11.5879 1.15315 10.9129 0.478149 10.0691 0.478149H7.90352C7.05977 0.478149 6.38477 1.15315 6.38477 1.9969V2.47502H4.21914C3.40352 2.47502 2.72852 3.15002 2.72852 3.96565V4.8094C2.72852 5.42815 3.09414 5.9344 3.62852 6.1594L4.07852 15.4688C4.13477 16.6219 5.09102 17.5219 6.24414 17.5219H11.7004C12.8535 17.5219 13.8098 16.6219 13.866 15.4688L14.3441 6.13127C14.8785 5.90627 15.2441 5.3719 15.2441 4.78127V3.93752C15.2441 3.15002 14.5691 2.47502 13.7535 2.47502ZM7.67852 1.9969C7.67852 1.85627 7.79102 1.74377 7.93164 1.74377H10.0973C10.2379 1.74377 10.3504 1.85627 10.3504 1.9969V2.47502H7.70664V1.9969H7.67852ZM4.02227 3.96565C4.02227 3.85315 4.10664 3.74065 4.24727 3.74065H13.7535C13.866 3.74065 13.9785 3.82502 13.9785 3.96565V4.8094C13.9785 4.9219 13.8941 5.0344 13.7535 5.0344H4.24727C4.13477 5.0344 4.02227 4.95002 4.02227 4.8094V3.96565ZM11.7285 16.2563H6.27227C5.79414 16.2563 5.40039 15.8906 5.37227 15.3844L4.95039 6.2719H13.0785L12.6566 15.3844C12.6004 15.8625 12.2066 16.2563 11.7285 16.2563Z"
+                        fill=""
+                      />
+                      <path
+                        d="M9.00039 9.11255C8.66289 9.11255 8.35352 9.3938 8.35352 9.75942V13.3313C8.35352 13.6688 8.63477 13.9782 9.00039 13.9782C9.33789 13.9782 9.64727 13.6969 9.64727 13.3313V9.75942C9.64727 9.3938 9.33789 9.11255 9.00039 9.11255Z"
+                        fill=""
+                      />
+                      <path
+                        d="M11.2502 9.67504C10.8846 9.64692 10.6033 9.90004 10.5752 10.2657L10.4064 12.7407C10.3783 13.0782 10.6314 13.3875 10.9971 13.4157C11.0252 13.4157 11.0252 13.4157 11.0533 13.4157C11.3908 13.4157 11.6721 13.1625 11.6721 12.825L11.8408 10.35C11.8408 9.98442 11.5877 9.70317 11.2502 9.67504Z"
+                        fill=""
+                      />
+                      <path
+                        d="M6.72245 9.67504C6.38495 9.70317 6.1037 10.0125 6.13182 10.35L6.3287 12.825C6.35683 13.1625 6.63808 13.4157 6.94745 13.4157C6.97558 13.4157 6.97558 13.4157 7.0037 13.4157C7.3412 13.3875 7.62245 13.0782 7.59433 12.7407L7.39745 10.2657C7.39745 9.90004 7.08808 9.64692 6.72245 9.67504Z"
+                        fill=""
+                      />
+                    </svg>
                   </button>
                   <button className="hover:text-primary">
                     <svg
@@ -250,52 +205,6 @@ const TableOne: FC<TableOneProps> = ({ data }) => {
               Next
             </button>
           </div>
-          {openModal && (
-            <div className="fixed inset-0 flex items-center justify-center z-50">
-                <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
-                <h2 className="text-2xl font-semibold mb-4">Update User Wallet Balance</h2>
-                    <form onSubmit={handleSubmit}>
-                        <div className="mb-4">
-                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="amount">
-                                Amount
-                            </label>
-                            <input
-                                type="text"
-                                name="amount"
-                                id="amount"
-                                value={formData.amount}
-                                onChange={handleChange}
-                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            />
-                        </div>
-                        <div className="col-span-1">
-                            <label className="block text-sm font-medium text-gray-700">Type</label>
-                            <select name="transType" value={formData.transType} onChange={handleChange} className="mt-1 block w-full p-2 border border-gray-300 rounded-md">
-                                <option value="">Select Transaction Type</option>
-                                <option value="debit">Debit</option>
-                                <option value="credit">Credit</option>
-                                {/* Add more services as needed */}
-                            </select>
-                        </div>
-                        <div className="flex items-center mt-4 justify-between">
-                                <button
-                                    type="submit"
-                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                >
-                                    Update Wallet
-                                </button>
-                                <button
-                                            type="button"
-                                            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                            onClick={() => setOpenModal(false)}
-                                        >
-                                    Cancel
-                                </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-          )}
         </>
       </div>
     </div>

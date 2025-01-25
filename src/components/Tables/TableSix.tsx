@@ -1,5 +1,5 @@
 "use client";
-import { SIGNALS } from "../../types/signals";
+import { DEPOSIT } from "../../types/deposits";
 import Image from "next/image";
 import { useState } from "react";
 import api from "@/lib/api";
@@ -7,20 +7,35 @@ import { FC } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-interface TableThreeProps {
-  data: SIGNALS[];
+interface TableOneProps {
+  data: DEPOSIT[];
 }
 
-//const TableThree: FC<TableThreeProps> = ({ data }) => {
-const TableThree: FC<TableThreeProps> = ({ data }) => {
-    const itemsPerPage = 5;
+//const TableOne: FC<TableOneProps> = ({ data }) => {
+const TableOne: FC<TableOneProps> = ({ data }) => {
+    const itemsPerPage = 10;
     const [currentPage, setCurrentPage] = useState(1);
 
     const router = useRouter();
 
     const handleNextPage = () => {
       setCurrentPage((prevPage) => prevPage + 1);
+    };
+
+    const handleBlockUser = async (userId: string) => {
+      console.log("user id", userId);
+      try {
+        await api.blockUser(userId);
+        toast.success("User blocked successfully");
+        setTimeout(() => {
+          router.push("/");
+        }, 3000);
+      } catch (error) {
+        console.error("Error blocking user:", error);
+        toast.error("Failed to block user");
+      }
     };
 
     const handlePreviousPage = () => {
@@ -32,10 +47,47 @@ const TableThree: FC<TableThreeProps> = ({ data }) => {
       currentPage * itemsPerPage
     );
 
+    const handleApproveTransaction = async (transactionId: string) => {
+        const payload =  {
+            transactionId: transactionId,
+            status: "approved"
+        };
+
+        try {
+            await api.approveTransaction(payload);
+            toast.success("Transaction approved successfully");
+            setTimeout(() => {
+                router.push('/');
+            }, 3000);
+        } catch (error) {
+            console.error("Error approving transaction:", error);
+            toast.error("Failed to approve transaction");
+        }
+    };
+
+    const handleDeclineTransaction = async (transactionId: string) => {
+        try {
+
+            const payload = {
+                transactionId: transactionId
+            }
+
+            await api.declineTransaction(payload);
+            toast.success("Transaction declined successfully");
+            setTimeout(() => {
+                router.push('/');
+            }, 3000);
+        } catch (error) {
+            console.error("Error declining transaction:", error);
+            toast.error("Failed to decline transaction");
+        }
+    };
+
   return (
+    
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
-        Signal Details
+        Deposits Transaction
       </h4>
       <ToastContainer />
       <div className="flex flex-col">
@@ -47,17 +99,12 @@ const TableThree: FC<TableThreeProps> = ({ data }) => {
           </div>
           <div className="p-2.5 text-center xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">
-              Symbol
-            </h5>
-          </div>
-          <div className="p-2.5 text-center xl:p-5">
-            <h5 className="text-sm font-medium uppercase xsm:text-base">
-              Interval
+              UserId
             </h5>
           </div>
           <div className="hidden p-2.5 text-center sm:block xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">
-              Units
+              Transaction Type
             </h5>
           </div>
           <div className="hidden p-2.5 text-center sm:block xl:p-5">
@@ -67,12 +114,17 @@ const TableThree: FC<TableThreeProps> = ({ data }) => {
           </div>
           <div className="hidden p-2.5 text-center sm:block xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">
-              Direction
+            Status
             </h5>
           </div>
           <div className="hidden p-2.5 text-center sm:block xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">
-              Status
+              Proof
+            </h5>
+          </div>
+          <div className="p-2.5 text-center xl:p-5">
+            <h5 className="text-sm font-medium uppercase xsm:text-base">
+              Action
             </h5>
           </div>
         </div>
@@ -84,34 +136,50 @@ const TableThree: FC<TableThreeProps> = ({ data }) => {
               </div>
 
               <div className="flex items-center justify-center p-2.5 xl:p-5">
-                <p className="text-black dark:text-white">{tableData.symbol}</p>
-              </div>
-
-              <div className="flex items-center justify-center p-2.5 xl:p-5">
-                <p className="text-black dark:text-white">{tableData.interval}</p>
+                <p className="text-black dark:text-white">{tableData.walletId}</p>
               </div>
 
               <div className="flex items-center justify-center p-2.5 xl:p-5">
                 <p className="text-meta-3">
-                  {tableData.units ? tableData.units : "N/A"}
+                  {tableData.type ? tableData.type : "N/A"}
                 </p>
               </div>
 
               <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-                <p className="text-meta-3">
-                  {tableData.amount ? tableData.amount : "N/A"}
+                <p className="text-black dark:text-white">
+                    {tableData.amount ? tableData.amount : "N/A"}
                 </p>
               </div>
               <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-                <p className="text-meta-3">
-                  {tableData.direction ? tableData.direction : "N/A"}
+                <p className="text-black dark:text-white">
+                    <span className={`text-meta-3 rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${tableData.status === "pending" ? "text-yellow-500 rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium" : tableData.status === "approved" ? "text-green-500 rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium" : tableData.status === "declined" ? "text-red-500  rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium" : ""}`}>
+                        {tableData.status ? tableData.status : "N/A"}
+                    </span>
                 </p>
               </div>
               <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-                <p className={`text-meta-3 rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${tableData.status === "ongoing" ? "text-yellow-500" : tableData.status === "win" ? "text-green-500" : tableData.status === "loss" ? "text-red-500" : ""}`}>
-                  {tableData.status ? tableData.status : "N/A"}
-                </p>
+                <div className="flex items-center space-x-3.5">
+                <Link href={tableData.proof} legacyBehavior>
+                    <a target="_blank" rel="noopener noreferrer" className="text-primary">
+                        View Proof
+                    </a>
+                </Link>
+                </div>
               </div>
+              <div>
+                    <button
+                        onClick={() => handleApproveTransaction(tableData._id)}
+                        className="px-4 py-2 bg-blue-500 text-white rounded"
+                    >
+                        Approve
+                    </button>
+                    <button
+                        onClick={() => handleDeclineTransaction(tableData._id)}
+                        className="px-4 py-2 bg-red-500 text-white rounded ml-2"
+                    >
+                        Decline
+                    </button>
+                </div>
             </div>
           ))}
           <div className="flex justify-between mt-4 mb-3">
@@ -136,4 +204,4 @@ const TableThree: FC<TableThreeProps> = ({ data }) => {
   );
 };
 
-export default TableThree;
+export default TableOne;

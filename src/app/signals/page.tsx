@@ -10,25 +10,25 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 
 const TablesPage = () => {
 
-  const [allUsers, setAllUsers] = useState([])
+  
+  const [signals, setSignals] = useState([]);
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await api.getAllUsers();
-        setAllUsers(response.users);
-        console.log("Total users ", response.totalUsers);
-      } catch (error) {
-        console.error("Error fetching Wix products: ", error);
-      }
+    const fetchSignals = async () => {
+        try {
+            const data = await api.getAllSignals();
+            setSignals(data);
+        } catch (error) {
+            console.error('Error fetching signals:', error);
+        }
     };
-    fetchUsers();
+    fetchSignals();
   } , []);
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Tables" />
+      <Breadcrumb pageName="Signals" />
       <div className="flex flex-col gap-10">
-        <TableOne data={allUsers} />
+        <TableThree data={signals} />
         {/* <TableThree /> */}
       </div>
     </DefaultLayout>

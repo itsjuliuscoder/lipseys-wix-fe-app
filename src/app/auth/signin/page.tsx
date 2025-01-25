@@ -17,39 +17,22 @@ const SignIn: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
 
-  useEffect(() => {
-    const user = localStorage.getItem("userDetails");
-    const userDetails = user ? JSON.parse(user) : null;
-    if(user && userDetails) {
-        router.push('/');
-    } else {
-        router.push('/auth/signin');
-    }
+  // useEffect(() => {
+  //   const user = localStorage.getItem("userDetails");
+  //   const userDetails = user ? JSON.parse(user) : null;
+  //   if(user && userDetails) {
+  //       router.push('/');
+  //   } else {
+  //       router.push('/auth/signin');
+  //   }
 
-  }, [router]);
+  // }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    try {
-      const response = await api.signIn({ email, password });
-      localStorage.setItem('userDetails', JSON.stringify(response.user));
-      localStorage.setItem('authToken', response.token);
-      setMessage(response.statusMessage);
-      setLoading(false);
-      toast.success(response.statusMessage);
-      setTimeout(() => {
-        if (response) {
-          router.push("/");
-        }
-      }, 2000);
-    } catch (error) {
-      setLoading(false);
-      const errorMsg = "Login failed --> " + (error instanceof Error ? error.message : "Unknown error");
-      setErrorMessage(errorMsg);
-      toast.error(errorMsg);
-    }
+    
   };
 
   return (
@@ -209,7 +192,7 @@ const SignIn: React.FC = () => {
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
               <span className="mb-1.5 block font-medium">Sign In to Continue</span>
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                Sign In to BayState Surplus App
+                Sign In to Exchange App App
               </h2>
 
               <form onSubmit={handleSubmit}>
