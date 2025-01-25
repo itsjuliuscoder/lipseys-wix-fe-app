@@ -9,8 +9,6 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 
 
 const TablesPage = () => {
-
-  
   const [signals, setSignals] = useState([]);
   useEffect(() => {
     const fetchSignals = async () => {

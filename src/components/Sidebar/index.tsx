@@ -164,7 +164,7 @@ const menuGroups = [
         route: "#",
         children: [
           { label: "Create Signal", route: "/create-signal" },
-          { label: "View Signals", route: "/inventory/lipseys" },
+          { label: "View Signals", route: "/signals" },
         ],
       },
       {
