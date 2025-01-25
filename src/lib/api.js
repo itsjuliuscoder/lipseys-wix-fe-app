@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:5001/api'; //'https://exchange-app-be.onrender.com/api';   //'http://localhost:5001/api';
+const API_BASE_URL = 'https://exchange-app-be.onrender.com/api' //'http://localhost:5001/api'; //'https://exchange-app-be.onrender.com/api';   //'http://localhost:5001/api';
 
 const userId = '6779855f4c7aebc2509ebc79';
 
