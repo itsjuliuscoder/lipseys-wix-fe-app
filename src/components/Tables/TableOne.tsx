@@ -58,8 +58,9 @@ const TableOne: FC<TableOneProps> = ({ data }) => {
               transType: '',
               amount: '',
           });
+          setOpenModal(false);
           setTimeout(() => {
-              router.push('/');
+              router.push('/trades');
           }, 3000);
       } catch (error) {
           toast.error('An error occurred while updating wallet balance');

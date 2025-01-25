@@ -213,7 +213,7 @@ const apiService = {
 
     updateWalletBalance: async (payload) => {
         try {
-            const response = await axios.put(`${API_BASE_URL}/wallet/update-balance`, payload);
+            const response = await axios.put(`${API_BASE_URL}/wallet/update-balance-manual`, payload);
             return response.data;
         } catch (error) {
             console.error('Error updating wallet balance:', error);
