@@ -203,7 +203,7 @@ const apiService = {
 
     blockUser: async (userId) => {
         try {
-            const response = await axios.axios.put(`${API_BASE_URL}/admin/block-user/${userId}`);
+            const response = await axios.put(`${API_BASE_URL}/admin/block-user/${userId}`);
             return response.data;
         } catch (error) {
             console.error('Error blocking user:', error);

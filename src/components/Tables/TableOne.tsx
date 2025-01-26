@@ -75,11 +75,12 @@ const TableOne: FC<TableOneProps> = ({ data }) => {
     const handleBlockUser = async (userId: string) => {
       console.log("user id", userId);
       try {
-        await api.blockUser(userId);
+        const response = await api.blockUser(userId);
+        console.log("this is the response ", response)
         toast.success("User blocked successfully");
         setTimeout(() => {
-          router.push("/");
-        }, 3000);
+            router.push('/loader');
+        }, 4000);
       } catch (error) {
         console.error("Error blocking user:", error);
         toast.error("Failed to block user");
