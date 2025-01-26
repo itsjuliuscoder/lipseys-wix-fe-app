@@ -37,7 +37,7 @@ const AllDeposits = () => {
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="All Deposits" />
+      <Breadcrumb pageName="All Withdrawals" />
       <div className="flex flex-col gap-10">
         <TableSeven data={withdrawalTrans} />
         {/* <TableThree /> */}
