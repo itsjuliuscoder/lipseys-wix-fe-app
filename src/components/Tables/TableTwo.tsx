@@ -11,7 +11,7 @@ interface TableTwoProps {
 
 //const TableTwo: FC<TableTwoProps> = ({ data }) => {
 const TableTwo: FC<TableTwoProps> = ({ data }) => {
-    const itemsPerPage = 10;
+    const itemsPerPage = 5;
     const [currentPage, setCurrentPage] = useState(1);
 
     const handleNextPage = () => {

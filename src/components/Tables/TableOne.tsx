@@ -47,7 +47,7 @@ const TableOne: FC<TableOneProps> = ({ data }) => {
           </div>
           <div className="p-2.5 text-center xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">
-              Price
+              Quantity
             </h5>
           </div>
           <div className="hidden p-2.5 text-center sm:block xl:p-5">
@@ -74,13 +74,8 @@ const TableOne: FC<TableOneProps> = ({ data }) => {
 
               <div className="flex items-center justify-center p-2.5 xl:p-5">
                 <p className="text-meta-3">
-                  {tableData.price ? tableData.price.formatted.price : "N/A"}
+                  {tableData.stock ? tableData.stock.quantity : "N/A"}
                 </p>
-                {tableData.price && tableData.price.discountedPrice && (
-                  <p className="text-red-500 ml-2">
-                    {tableData.price.formatted.discountedPrice}
-                  </p>
-                )}
               </div>
 
               <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">

@@ -38,6 +38,15 @@ const api = {
         });
         return response.data;
     },
+
+    getSyncedProducts: async () => {
+        const response = await axios.get(`${BASE_URL}/sync/get-synced-products`, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response.data;
+    }
 };
 
 export default api;

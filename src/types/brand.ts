@@ -10,7 +10,12 @@ export type BRAND = {
       discountedPrice: string; 
     }; 
   };
-  stock: { inventoryStatus: string };
+  stock: { 
+    trackInventory: boolean;
+    quantity: number;
+    inStock: boolean;
+    inventoryStatus: string;
+  };
   media: { 
     mainMedia: { 
       image: { 
