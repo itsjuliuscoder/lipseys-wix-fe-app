@@ -1,17 +1,19 @@
 "use client";
 import { LipseysProduct } from "@/types/lipseys";
+import { SyncedProduct } from "@/types/synced";
 import Image from "next/image";
 import { useState } from "react";
+import moment from "moment";
 
 import { FC } from "react";
 
 interface TableTwoProps {
-  data: LipseysProduct[];
+  data: SyncedProduct[];
 }
 
 //const TableTwo: FC<TableTwoProps> = ({ data }) => {
 const TableTwo: FC<TableTwoProps> = ({ data }) => {
-    const itemsPerPage = 5;
+    const itemsPerPage = 10;
     const [currentPage, setCurrentPage] = useState(1);
 
     const handleNextPage = () => {
@@ -34,7 +36,12 @@ const TableTwo: FC<TableTwoProps> = ({ data }) => {
       </h4>
 
       <div className="flex flex-col">
-        <div className="grid grid-cols-3 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-5">
+        <div className="grid grid-cols-2 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-6">
+          <div className="p-2.5 xl:p-5">
+            <h5 className="text-sm font-medium uppercase xsm:text-base">
+              S/N
+            </h5>
+          </div>
           <div className="p-2.5 xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">
               SKU
@@ -47,42 +54,46 @@ const TableTwo: FC<TableTwoProps> = ({ data }) => {
           </div>
           <div className="p-2.5 text-center xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">
-              Price
+              Previous Quantity
             </h5>
           </div>
           <div className="hidden p-2.5 text-center sm:block xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">
-              Quantity
+              Updated Quantity
             </h5>
           </div>
           <div className="hidden p-2.5 text-center sm:block xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">
-              Type
+              Time
             </h5>
           </div>
         </div>
         <>
           {paginatedData.map((tableData, index) => (
-            <div key={tableData.upc} className="grid grid-cols-3 border-b border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-5 md:px-6 2xl:px-7.5">
+            <div key={tableData.sku} className="grid grid-cols-2 border-b border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-6 md:px-6 2xl:px-7.5">
               <div className="flex items-left p-2.5 xl:p-5">
-                <p className="text-black dark:text-white">{tableData.upc}</p>
+              <p className="text-black dark:text-white">{(currentPage - 1) * itemsPerPage + index + 1}</p>
+              </div>
+
+              <div className="flex items-left p-2.5 xl:p-5">
+              <p className="text-black dark:text-white">{tableData.sku}</p>
               </div>
 
               <div className="flex items-center justify-center p-2.5 xl:p-5">
-                <p className="text-black dark:text-white">{tableData.description1}</p>
+              <p className="text-black dark:text-white">{tableData.productName}</p>
               </div>
 
               <div className="flex items-center justify-center p-2.5 xl:p-5">
-                <p className="text-black dark:text-white">${tableData.price}</p>
+              <p className="text-black dark:text-white">{tableData.previousQuantity}</p>
               </div>
 
               <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-                  <p className="text-black dark:text-white">{tableData.quantity}</p>
+                <p className="text-black dark:text-white">{tableData.updatedQuantity}</p>
               </div>
 
-              <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-                <p className="text-black dark:text-white">{tableData.type}</p>
-              </div>
+                <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
+                <p className="text-black dark:text-white">{moment(tableData.timestamp).format('MMMM Do YYYY, h:mm:ss a')}</p>
+                </div>
             </div>
           ))}
           <div className="flex justify-between mt-4 mb-3">

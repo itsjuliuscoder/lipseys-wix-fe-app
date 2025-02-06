@@ -31,7 +31,6 @@ const SignIn: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    console.log("email & password", email, password);
     const payload = { email, password };
     try {
       const response = await api.signIn(payload);
