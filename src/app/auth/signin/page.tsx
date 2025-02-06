@@ -17,39 +17,38 @@ const SignIn: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
 
-  useEffect(() => {
-    const user = localStorage.getItem("userDetails");
-    const userDetails = user ? JSON.parse(user) : null;
-    if(user && userDetails) {
-        router.push('/');
-    } else {
-        router.push('/auth/signin');
-    }
+  // useEffect(() => {
+  //   const user = localStorage.getItem("userDetails");
+  //   const userDetails = user ? JSON.parse(user) : null;
+  //   if(user && userDetails) {
+  //       router.push('/');
+  //   } else {
+  //       router.push('/auth/signin');
+  //   }
 
-  }, [router]);
+  // }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
+    console.log("email & password", email, password);
+    const payload = { email, password };
     try {
-      const response = await api.signIn({ email, password });
-      localStorage.setItem('userDetails', JSON.stringify(response.user));
-      localStorage.setItem('authToken', response.token);
-      setMessage(response.statusMessage);
-      setLoading(false);
-      toast.success(response.statusMessage);
+      const response = await api.signIn(payload);
+      const { data } = response;
+      setUserData(data);
+      localStorage.setItem("userDetails", JSON.stringify(data));
+      toast.success("Sign in successful!");
       setTimeout(() => {
-        if (response) {
-          router.push("/");
-        }
-      }, 2000);
+        router.push("/");
+      }, 3000);
     } catch (error) {
+      setErrorMessage("Sign in failed. Please check your credentials and try again.");
+      toast.error("Sign in failed. Please check your credentials and try again.");
+    } finally {
       setLoading(false);
-      const errorMsg = "Login failed --> " + (error instanceof Error ? error.message : "Unknown error");
-      setErrorMessage(errorMsg);
-      toast.error(errorMsg);
     }
+    
   };
 
   return (
@@ -75,10 +74,10 @@ const SignIn: React.FC = () => {
                 /> */}
               </Link>
 
-              <p className="4xl:px-20">
+              {/* <p className="4xl:px-20">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit
                 suspendisse.
-              </p>
+              </p> */}
 
               <span className="mt-15 inline-block">
                 <svg
@@ -209,7 +208,7 @@ const SignIn: React.FC = () => {
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
               <span className="mb-1.5 block font-medium">Sign In to Continue</span>
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                Sign In to BayState Surplus App
+                Sign In to Lipseys-Wix Synchronization App 
               </h2>
 
               <form onSubmit={handleSubmit}>

@@ -1,5 +1,5 @@
 export type BRAND = {
-  sku: string;
+  _id: string;
   name: string;
   price: { 
     price: number; 

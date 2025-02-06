@@ -107,11 +107,25 @@ const TableFour: React.FC = () => {
               </div>
 
               <div className="flex items-center justify-center p-2.5 xl:p-5">
-                <p className="font-medium text-meta-3">${brand.revenues}</p>
+                <p className="text-meta-3">
+                  {tableData.units ? tableData.units : "N/A"}
+                </p>
               </div>
 
               <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-                <p className="font-medium text-meta-5">{brand.conversion}%</p>
+                <p className="text-meta-3">
+                  {tableData.amount ? tableData.amount : "N/A"}
+                </p>
+              </div>
+              <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
+                <p className="text-meta-3">
+                  {tableData.direction ? tableData.direction : "N/A"}
+                </p>
+              </div>
+              <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
+                <p className={`text-meta-3 rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${tableData.status === "ongoing" ? "text-yellow-500" : tableData.status === "win" ? "text-green-500" : tableData.status === "loss" ? "text-red-500" : ""}`}>
+                  {tableData.status ? tableData.status : "N/A"}
+                </p>
               </div>
             </div>
           ))} */}

@@ -27,15 +27,7 @@ const ECommerce: React.FC = () => {
   const [totalLipseysProducts, setTotalLipseysProducts] = useState(0);
 
   useEffect(() => {
-    const fetchWixProducts = async () => {
-      try {
-        const response = await api.getWixProducts();
-        setWixProducts(response._items);
-        setTotalWixProducts(response._totalCount);
-      } catch (error) {
-        console.error("Error fetching Wix products: ", error);
-      }
-    };
+    
 
     const fetchSyncedProducts = async () => {
       try {
@@ -50,23 +42,34 @@ const ECommerce: React.FC = () => {
     const fetchLipseysProducts = async () => {
       try {
         const response = await api.getLipseysCatalog();
-        console.log("Lipseys products ", response);
         setLipseysProducts(response);
         setTotalLipseysProducts(response.length);
       } catch (error) {
         console.error("Error fetching Lipseys products: ", error);
       }
-    }
+    };
+
+    const fetchWixProducts = async () => {
+      try {
+      const response = await api.getWixProducts();
+      setWixProducts(response._items);
+      setTotalWixProducts(response._totalCount);
+      } catch (error) {
+      console.error("Error fetching Wix products: ", error);
+      }
+    };
+    
 
     fetchSyncedProducts();
     fetchLipseysProducts();
     fetchWixProducts();
   }, []);
+  
 
   return (
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6 xl:grid-cols-3 2xl:gap-7.5">
-        <CardDataStats title="Total Synced Products" total={totalSyncedProducts ? totalSyncedProducts.toString() : ''} rate="2.59%" levelUp>
+        <CardDataStats title="Total Synced Products" total={totalSyncedProducts ? totalSyncedProducts : ''} >
           <svg
         className="fill-primary dark:fill-white"
         width="22"
@@ -85,7 +88,7 @@ const ECommerce: React.FC = () => {
         />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Wix Product" total={totalWixProducts ? totalWixProducts.toString() : ''} rate="2.59%" levelUp>
+        <CardDataStats title="Total Wix Product" total={totalWixProducts ? totalWixProducts : ''}>
           <svg
         className="fill-primary dark:fill-white"
         width="22"
@@ -104,7 +107,7 @@ const ECommerce: React.FC = () => {
         />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Lipseys Products" total={totalLipseysProducts ? totalLipseysProducts.toString() : ''} rate="0.95%" levelDown>
+        <CardDataStats title="Total Lipseys Products" total={totalLipseysProducts ? totalLipseysProducts : ''}>
           <svg
               className="fill-primary dark:fill-white"
               width="22"
@@ -124,18 +127,18 @@ const ECommerce: React.FC = () => {
           </svg>
         </CardDataStats>
       </div>
-
-      <div className="col-span-12 mt-3">
+      
+      {/* <div className="col-span-12 mt-3">
           <TableOne data={wixProducts} />
-      </div>
+      </div> */}
 
       <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
-          {/* <ChartOne />
-          <ChartTwo /> */}
+        {/* <ChartOne />
+        <ChartTwo /> */}
         <div className="col-span-12 xl:col-span-7">
           <TableTwo data={lipseysProducts} />
         </div>
-        <ChartThree wixData={totalWixProducts.toString()} lipseysProducts={totalLipseysProducts.toString()} />
+        {/* <ChartThree wixData={totalWixProducts} lipseysProducts={totalLipseysProducts} /> */}
       </div>
     </>
   );

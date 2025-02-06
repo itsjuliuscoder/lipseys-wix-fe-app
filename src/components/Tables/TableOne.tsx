@@ -74,8 +74,13 @@ const TableOne: FC<TableOneProps> = ({ data }) => {
 
               <div className="flex items-center justify-center p-2.5 xl:p-5">
                 <p className="text-meta-3">
-                  {tableData.stock ? tableData.stock.quantity : "N/A"}
+                  {tableData.price ? tableData.price.formatted.price : "N/A"}
                 </p>
+                {tableData.price && tableData.price.discountedPrice && (
+                  <p className="text-red-500 ml-2">
+                    {tableData.price.formatted.discountedPrice}
+                  </p>
+                )}
               </div>
 
               <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
