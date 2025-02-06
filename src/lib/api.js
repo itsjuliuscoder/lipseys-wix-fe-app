@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:10000/api' //'http://localhost:5001/api'; //'https://exchange-app-be.onrender.com/api';   //'http://localhost:5001/api';
+const BASE_URL = 'https://lipsey-wix-api-be-v1.onrender.com/api' //'http://localhost:5001/api'; //'https://exchange-app-be.onrender.com/api';   //'http://localhost:5001/api';
 
 const userId = '6779855f4c7aebc2509ebc79';
 
