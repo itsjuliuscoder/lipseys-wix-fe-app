@@ -17,16 +17,16 @@ const SignIn: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
 
-  // useEffect(() => {
-  //   const user = localStorage.getItem("userDetails");
-  //   const userDetails = user ? JSON.parse(user) : null;
-  //   if(user && userDetails) {
-  //       router.push('/');
-  //   } else {
-  //       router.push('/auth/signin');
-  //   }
+  useEffect(() => {
+    const user = localStorage.getItem("userDetails");
+    const userDetails = user ? JSON.parse(user) : null;
+    if(user && userDetails) {
+        router.push('/');
+    } else {
+        router.push('/auth/signin');
+    }
 
-  // }, [router]);
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -18,6 +18,12 @@ export default function DefaultLayout({
   const router = useRouter();
 
   useEffect(() => {
+
+    const userDetails = localStorage.getItem("userDetails");
+    if (!userDetails) {
+      router.push("/auth/signin");
+      return;
+    }
     // const fetchWalletDetails = async () => {
     //   try {
     //     const response = await api.getWalletDetails();
