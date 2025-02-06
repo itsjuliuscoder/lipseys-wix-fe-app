@@ -4,8 +4,8 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 
 export const metadata: Metadata = {
   title:
-    "Exchange App App Inventory Management System",
-  description: "This is a simple inventory management system for Exchange App",
+    "BayState Surplus Synchronization App",
+  description: "This is a simple inventory management system for BayState Surplus.",
 };
 
 export default function Home() {
